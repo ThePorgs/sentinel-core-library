@@ -1,0 +1,5 @@
+# Read the Kerberos credential cache pointed to by KRB5CCNAME.
+
+actions:
+  dump_kerberos:
+    dump_kerberos: {}

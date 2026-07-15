@@ -1,0 +1,10 @@
+# Detect Responder or bettercap
+
+triggers:
+  responder_or_bettercap:
+    command:
+      name:
+        - responder
+        - Responder
+        - bettercap
+      ignore_extension: true

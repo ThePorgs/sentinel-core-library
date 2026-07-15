@@ -1,0 +1,29 @@
+# Demo profile:
+# 1) Dump Kerberos ticket
+#    - TRIGGERS: Kerberos Pass-the-Ticket/Pass-the-Ccache on Impacket / evil-winrm-pydump the KRB5CCNAME cache
+#    - ACTIONS: Dump the contents of the file pointed to by the KRB5CCNAME environment variable
+# 2) Network capture
+#    - TRIGGERS: Responder or bettercap is used
+#    - ACTIONS: Network capture for the life of the process
+
+profiles:
+  demo:
+    config: 
+      log_rotation: 
+        enabled: true
+        compress: true
+        max_size: 100MB
+        max_files: 0
+      env_redact:  # Redact sensitive environment variables (w/ optional pattern matching)
+        - "AWS_SECRET_ACCESS_KEY"
+        - "KRBTGT*"
+        - "*TOKEN*"
+    rules:
+      - triggers:
+          - kerberos_pass_the_ticket
+        actions:
+          - dump_kerberos
+      - triggers:
+          - responder_or_bettercap
+        actions:
+          - capture_net

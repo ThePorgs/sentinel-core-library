@@ -1,0 +1,63 @@
+# Detect Kerberos ticket use (Pass-the-Ticket/Pass-the-Ccache):
+# KRB5CCNAME is set AND the command is an Impacket style script
+# (or evil-winrm-py), AND -k or --kerberos is present.
+# ignore_extension matches both `secretsdump` and `secretsdump.py`
+
+triggers:
+  kerberos_env_var:
+    env_var:
+      variable: KRB5CCNAME
+
+  kerberos_params:
+    trigger:
+      operator: OR
+      triggers:
+        - parameter:
+            argument: -k
+        - parameter:
+            argument: --kerberos
+
+  impacket_scripts:
+    command:
+      name:
+        # Impacket family (Exegol also ships *-og twins); and NetExec as well.
+        - secretsdump
+        - secretsdump-og
+        - psexec
+        - psexec-og
+        - wmiexec
+        - wmiexec-og
+        - smbexec
+        - smbexec-og
+        - smbclient
+        - smbclient-og
+        - atexec
+        - atexec-og
+        - dcomexec
+        - dcomexec-og
+        - mssqlclient
+        - mssqlclient-og
+        - getST
+        - getST-og
+        - getTGT
+        - getTGT-og
+        - ticketConverter
+        - ticketConverter-og
+        - ticketer
+        - ticketer-og
+        - raiseChild
+        - raiseChild-og
+        - evil-winrm-py
+        - netexec
+        - NetExec
+        - nxc
+      ignore_extension: true
+
+  # Profile-facing: environment variable AND Impacket script AND Impacket parameter
+  kerberos_pass_the_ticket:
+    trigger:
+      operator: AND
+      triggers:
+        - kerberos_env_var
+        - impacket_scripts
+        - kerberos_params

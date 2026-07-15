@@ -1,0 +1,8 @@
+# Capture traffic for as long as the matching process runs.
+# Omit duration so Sentinel defaults to the process lifetime (not a fixed window).
+
+actions:
+  capture_net:
+    network_capture:
+      interface: any
+      # duration: 0
